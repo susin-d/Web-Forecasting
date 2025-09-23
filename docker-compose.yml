@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/weatherdb
+      - SPRING_DATASOURCE_USERNAME=weatheruser
+      - SPRING_DATASOURCE_PASSWORD=weatherpass
+      - SPRING_CACHE_REDIS_HOST=redis
+      - SPRING_CACHE_REDIS_PORT=6379
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=weatherdb
+      - POSTGRES_USER=weatheruser
+      - POSTGRES_PASSWORD=weatherpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
