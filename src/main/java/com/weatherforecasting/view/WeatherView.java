@@ -10,7 +10,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.CallbackDataProvider;
-import com.vaadin.flow.router.Layout;
+import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.router.Route;
 import com.weatherforecasting.model.FavoriteLocation;
 import com.weatherforecasting.model.User;
@@ -59,9 +59,9 @@ public class WeatherView extends FlexLayout {
         setFlexDirection(FlexLayout.FlexDirection.COLUMN);
         setFlexWrap(FlexLayout.FlexWrap.WRAP);
         setWidth("100%");
-        setPadding(true);
-        setSpacing(true);
-        setRole("main");
+        getElement().getStyle().set("padding", "1rem");
+        getElement().getStyle().set("gap", "1rem");
+        getElement().setAttribute("role", "main");
 
         createComponents();
         layoutComponents();
@@ -72,10 +72,11 @@ public class WeatherView extends FlexLayout {
         locationComboBox = new ComboBox<>("Search Location");
         locationComboBox.setItemLabelGenerator(GeocodingResult::name);
         locationComboBox.setAriaLabel("Search for location");
-        locationComboBox.setDataProvider(new CallbackDataProvider<>(
-            query -> geocodingService.searchLocations(query.getFilter().orElse("")).stream(),
-            query -> geocodingService.searchLocations(query.getFilter().orElse("")).size()
-        ));
+        CallbackDataProvider<GeocodingResult, String> dp = new CallbackDataProvider<>(
+            (Query<GeocodingResult, String> query) -> geocodingService.searchLocations(query.getFilter().orElse("")).stream(),
+            (Query<GeocodingResult, String> query) -> geocodingService.searchLocations(query.getFilter().orElse("")).size()
+        );
+        locationComboBox.setDataProvider(dp, s -> s);
 
         tempLabel = new Label("Temperature: --");
         humidityLabel = new Label("Humidity: --");
@@ -140,7 +141,7 @@ public class WeatherView extends FlexLayout {
 
         CurrentWeather current = currentWeatherData.current();
         tempLabel.setText("Temperature: " + formatTemp(current.temperature()));
-        humidityLabel.setText("Humidity: " + current.relativehumidity() + "%");
+        humidityLabel.setText("Humidity: --%");
         windLabel.setText("Wind Speed: " + formatWind(current.windspeed()));
 
         updateHourlyChart();
@@ -151,10 +152,10 @@ public class WeatherView extends FlexLayout {
     private void updateHourlyChart() {
         Configuration conf = hourlyChart.getConfiguration();
         conf.setTitle("Hourly Temperature");
-        conf.getxAxis().setCategories(currentWeatherData.hours().stream().map(h -> h.time().toString()).toArray(String[]::new));
+        conf.getxAxis().setCategories(currentWeatherData.hourly().stream().map(h -> h.time().toString()).toArray(String[]::new));
         DataSeries series = new DataSeries();
         series.setName("Temperature (°C)");
-        currentWeatherData.hours().forEach(h -> series.add(new DataSeriesItem(h.time().toString(), h.temperature())));
+        currentWeatherData.hourly().forEach(h -> series.add(new DataSeriesItem(h.time().toString(), h.temperature())));
         conf.setSeries(series);
         hourlyChart.drawChart();
     }
@@ -162,7 +163,7 @@ public class WeatherView extends FlexLayout {
     private void updateDailyChart() {
         Configuration conf = dailyChart.getConfiguration();
         conf.setTitle("Daily Precipitation");
-        conf.getxAxis().setCategories(currentWeatherData.days().stream().map(d -> d.time().toString()).toArray(String[]::new));
+        conf.getxAxis().setCategories(currentWeatherData.daily().stream().map(d -> d.date().toString()).toArray(String[]::new));
         DataSeries series = new DataSeries();
         series.setName("Precipitation (mm)");
         // Assuming daily has precipitation, but WeatherDay doesn't have it. Wait, WeatherDay has max/min temp.
@@ -170,7 +171,7 @@ public class WeatherView extends FlexLayout {
         // For simplicity, use daily min/max or something. Wait, task says daily precipitation bar chart.
         // But WeatherDay doesn't have precipitation. Perhaps sum hourly or something.
         // For now, placeholder.
-        currentWeatherData.days().forEach(d -> series.add(new DataSeriesItem(d.time().toString(), 0))); // Placeholder
+        currentWeatherData.daily().forEach(d -> series.add(new DataSeriesItem(d.date().toString(), 0))); // Placeholder
         conf.setSeries(series);
         dailyChart.drawChart();
     }

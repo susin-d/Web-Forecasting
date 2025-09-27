@@ -7,5 +7,6 @@ public record CurrentWeather(
     @JsonProperty("windspeed") double windspeed,
     @JsonProperty("winddirection") double winddirection,
     @JsonProperty("weathercode") int weathercode,
-    @JsonProperty("time") String time
+    @JsonProperty("time") String time,
+    @JsonProperty("is_day") int isDay
 ) {}

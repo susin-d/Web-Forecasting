@@ -1,0 +1,5 @@
+{
+  "name": "Weather Forecast Dashboard",
+  "description": "A sleek, modern weather forecasting application that provides current weather conditions, hourly and daily forecasts, and weather alerts. Users can search for locations, manage their favorite spots, and customize their viewing preferences.",
+  "requestFramePermissions": []
+}

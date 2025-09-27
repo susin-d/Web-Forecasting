@@ -5,5 +5,6 @@ public record WeatherHour(
     double temperature,
     double humidity,
     double windspeed,
-    double precipitation
+    double precipitation,
+    int weathercode
 ) {}

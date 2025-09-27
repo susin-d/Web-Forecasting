@@ -1,5 +1,7 @@
 package com.weatherforecasting.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -9,7 +11,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.weatherforecasting.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("login")
 public class LoginView extends FlexLayout {
@@ -20,6 +21,8 @@ public class LoginView extends FlexLayout {
     private TextField usernameField;
     private PasswordField passwordField;
     private Button loginButton;
+    private H1 title;
+    private RouterLink registerLink;
 
     public LoginView() {
         setFlexDirection(FlexLayout.FlexDirection.COLUMN);
@@ -35,7 +38,7 @@ public class LoginView extends FlexLayout {
     }
 
     private void createComponents() {
-        H1 title = new H1("Login");
+        title = new H1("Login");
 
         usernameField = new TextField("Username");
         usernameField.setAriaLabel("Username");
@@ -44,7 +47,7 @@ public class LoginView extends FlexLayout {
         loginButton = new Button("Login");
         loginButton.setAriaLabel("Login");
 
-        RouterLink registerLink = new RouterLink("Register", RegisterView.class);
+        registerLink = new RouterLink("Register", RegisterView.class);
     }
 
     private void layoutComponents() {

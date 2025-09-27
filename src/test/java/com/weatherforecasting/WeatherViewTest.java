@@ -4,8 +4,9 @@ import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.LabelElement;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 
 public class WeatherViewTest extends TestBenchTestCase {
@@ -25,8 +26,8 @@ public class WeatherViewTest extends TestBenchTestCase {
 
         // Check if temperature label is updated
         LabelElement tempLabel = $(LabelElement.class).caption("Temperature:").first();
-        Assert.assertNotNull(tempLabel.getText());
-        Assert.assertTrue(tempLabel.getText().contains("°C") || tempLabel.getText().contains("°F"));
+        assertNotNull(tempLabel.getText());
+        assertTrue(tempLabel.getText().contains("°C") || tempLabel.getText().contains("°F"));
     }
 
     @Test
@@ -41,9 +42,9 @@ public class WeatherViewTest extends TestBenchTestCase {
         LabelElement humidityLabel = $(LabelElement.class).caption("Humidity:").first();
         LabelElement windLabel = $(LabelElement.class).caption("Wind Speed:").first();
 
-        Assert.assertNotNull(humidityLabel.getText());
-        Assert.assertNotNull(windLabel.getText());
-        Assert.assertTrue(humidityLabel.getText().contains("%"));
-        Assert.assertTrue(windLabel.getText().contains("m/s") || windLabel.getText().contains("mph"));
+        assertNotNull(humidityLabel.getText());
+        assertNotNull(windLabel.getText());
+        assertTrue(humidityLabel.getText().contains("%"));
+        assertTrue(windLabel.getText().contains("m/s") || windLabel.getText().contains("mph"));
     }
 }

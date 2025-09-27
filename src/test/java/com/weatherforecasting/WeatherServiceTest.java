@@ -1,19 +1,28 @@
 package com.weatherforecasting;
 
-import com.weatherforecasting.service.*;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.weatherforecasting.service.CurrentWeather;
+import com.weatherforecasting.service.DailyData;
+import com.weatherforecasting.service.HourlyData;
+import com.weatherforecasting.service.OpenMeteoResponse;
+import com.weatherforecasting.service.WeatherApiException;
+import com.weatherforecasting.service.WeatherData;
+import com.weatherforecasting.service.WeatherService;
+
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 
 class WeatherServiceTest {
 
@@ -78,18 +87,20 @@ class WeatherServiceTest {
     }
 
     private OpenMeteoResponse createMockResponse() {
-        CurrentWeather current = new CurrentWeather(25.0, 5.0, 180.0, 1, "2023-10-01T12:00");
+        CurrentWeather current = new CurrentWeather(25.0, 5.0, 180.0, 1, "2023-10-01T12:00", 1, 60.0);
         HourlyData hourly = new HourlyData(
             Arrays.asList("2023-10-01T12:00", "2023-10-01T13:00"),
             Arrays.asList(25.0, 26.0),
             Arrays.asList(60.0, 65.0),
             Arrays.asList(5.0, 6.0),
-            Arrays.asList(0.0, 0.0)
+            Arrays.asList(0.0, 0.0),
+            Arrays.asList(1, 2)
         );
         DailyData daily = new DailyData(
             Arrays.asList("2023-10-01", "2023-10-02"),
             Arrays.asList(20.0, 22.0),
-            Arrays.asList(15.0, 18.0)
+            Arrays.asList(15.0, 18.0),
+            Arrays.asList(1, 2)
         );
         return new OpenMeteoResponse(current, hourly, daily);
     }
