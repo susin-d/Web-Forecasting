@@ -1,6 +1,3 @@
-package com.weatherforecasting;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -12,23 +9,16 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
-public class WeatherServer {
-    private final ObjectMapper objectMapper;
-
-    public WeatherServer() {
-        this.objectMapper = new ObjectMapper();
-    }
+public class WeatherApp {
 
     public void start() throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8083), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/weather", new WeatherHandler());
         server.createContext("/geocode", new GeocodeHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
-        System.out.println("Server started on port 8083");
+        System.out.println("Server started on port 8080");
     }
 
     private class WeatherHandler implements HttpHandler {
@@ -77,7 +67,7 @@ public class WeatherServer {
     }
 
     private String proxyRequest(String targetUrl) throws IOException {
-        URL url = new URL(targetUrl);
+        URL url = URI.create(targetUrl).toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
@@ -88,6 +78,9 @@ public class WeatherServer {
 
     private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
         exchange.sendResponseHeaders(statusCode, response.getBytes().length);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response.getBytes());
@@ -95,7 +88,7 @@ public class WeatherServer {
     }
 
     public static void main(String[] args) throws IOException {
-        WeatherServer server = new WeatherServer();
+        WeatherApp server = new WeatherApp();
         server.start();
     }
 }

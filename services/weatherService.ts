@@ -97,7 +97,7 @@ const fetchAndFormatWeather = async (latitude: number, longitude: number, locati
       temperature_unit: units.temp,
       timezone: 'auto'
   };
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?${new URLSearchParams(weatherParams as any).toString()}`;
+  const weatherUrl = `http://localhost:8080/weather?${new URLSearchParams(weatherParams as any).toString()}`;
   
   const weatherResponse = await fetch(weatherUrl);
   if (!weatherResponse.ok) {
@@ -153,7 +153,7 @@ const fetchAndFormatWeather = async (latitude: number, longitude: number, locati
  * @returns A promise that resolves to the formatted WeatherData object.
  */
 export const getWeatherByCoords = async (lat: number, lon: number, units: { temp: TemperatureUnit, wind: WindSpeedUnit }): Promise<WeatherData> => {
-  const reverseGeoUrl = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1&language=en&format=json`;
+  const reverseGeoUrl = `http://localhost:8080/geocode?latitude=${lat}&longitude=${lon}&count=1&language=en&format=json`;
   const geoResponse = await fetch(reverseGeoUrl);
   if (!geoResponse.ok) {
     throw new Error(`Failed to fetch location data for coordinates: ${geoResponse.statusText}`);
@@ -170,7 +170,7 @@ export const getWeatherByCoords = async (lat: number, lon: number, units: { temp
  * @returns A promise that resolves to the formatted WeatherData object.
  */
 export const getWeather = async (location: string, units: { temp: TemperatureUnit, wind: WindSpeedUnit }): Promise<WeatherData> => {
-  const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`;
+  const geoUrl = `http://localhost:8080/geocode?name=${encodeURIComponent(location)}&count=1&language=en&format=json`;
   const geoResponse = await fetch(geoUrl);
   if (!geoResponse.ok) {
     throw new Error(`Failed to fetch location data: ${geoResponse.statusText}`);
