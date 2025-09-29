@@ -15,7 +15,7 @@ const WeatherDetail: React.FC<{ icon: string; label: string; value: string | num
     <i className={`fas ${icon} text-accent text-lg`}></i>
     <div className="ml-3">
       <p className="text-sm text-text-secondary">{label}</p>
-      <p className="font-bold">{value}</p>
+      <p className="font-bold text-text-primary">{value}</p>
     </div>
   </div>
 );
@@ -38,11 +38,11 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, locationData, fav
   };
   
   return (
-    <div className="bg-secondary rounded-2xl p-6 shadow-lg transition-transform transform hover:scale-105 duration-300">
+    <div className="bg-secondary rounded-2xl p-6 shadow-md transition-transform transform hover:scale-105 duration-300 border border-tertiary">
       <div className="flex justify-between items-start">
         <div>
            <div className="flex items-center">
-            <h2 className="text-2xl font-bold">{locationData.location}</h2>
+            <h2 className="text-2xl font-bold text-text-primary">{locationData.location}</h2>
             <button 
               onClick={handleFavoriteClick} 
               className="ml-4 text-2xl transition-transform transform hover:scale-125 duration-200 focus:outline-none"
@@ -56,7 +56,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, locationData, fav
         <i className={`fas ${data.icon} text-5xl text-accent`}></i>
       </div>
       <div className="flex items-end mt-4">
-        <h1 className="text-7xl font-extrabold">{data.temperature}°</h1>
+        <h1 className="text-7xl font-extrabold text-text-primary">{data.temperature}°</h1>
         <p className="ml-4 mb-2 text-lg text-text-secondary">Feels like {data.apparentTemperature}°</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-tertiary">

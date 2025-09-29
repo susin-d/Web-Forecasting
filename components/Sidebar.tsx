@@ -1,80 +1,55 @@
-
 import React from 'react';
-import { View } from '../types';
+import { WeatherData, TemperatureUnit, WindSpeedUnit, View } from '../types';
+import SettingsPanel from './ProfileView';
 
 interface SidebarProps {
-  currentView: View;
+  weatherData: WeatherData | null;
+  units: { temp: TemperatureUnit; wind: WindSpeedUnit };
+  onUnitsChange: (newUnits: { temp: TemperatureUnit; wind: WindSpeedUnit }) => void;
+  view: View;
   onNavigate: (view: View) => void;
 }
 
-const NavItem: React.FC<{
-  icon: string;
-  label: string;
-  view: View;
-  currentView: View;
-  onClick: (view: View) => void;
-}> = ({ icon, label, view, currentView, onClick }) => {
-  const isActive = currentView === view;
-  return (
-    <li
-      className={`flex items-center p-3 my-1 rounded-lg cursor-pointer transition-all duration-200 ${
-        isActive
-          ? 'bg-accent text-white shadow-lg'
-          : 'text-text-secondary hover:bg-tertiary hover:text-text-primary'
+const NavItem: React.FC<{icon: string, label: string, active: boolean, onClick: () => void}> = ({icon, label, active, onClick}) => (
+    <button 
+      onClick={onClick} 
+      className={`w-full flex items-center py-3 px-2 rounded-lg text-left transition-colors text-sm ${
+        active 
+        ? 'bg-white/20 text-text-primary font-bold' 
+        : 'text-text-secondary hover:bg-white/10 hover:text-text-primary font-medium'
       }`}
-      onClick={() => onClick(view)}
+      aria-current={active ? 'page' : undefined}
     >
-      <i className={`fas ${icon} w-6 text-center`}></i>
-      <span className="ml-4 font-semibold">{label}</span>
-    </li>
-  );
-};
+        <i className={`fas ${icon} w-6 text-center mr-3 text-base`}></i>
+        <span>{label}</span>
+    </button>
+)
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => {
+const Sidebar: React.FC<SidebarProps> = ({ weatherData, units, onUnitsChange, view, onNavigate }) => {
   return (
-    <aside className="w-64 bg-primary p-4 flex-shrink-0 flex flex-col justify-between">
+    <aside className="w-[300px] bg-black/20 p-8 flex-shrink-0 flex flex-col justify-between border-r border-white/10">
       <div>
-        <div className="flex items-center mb-10 p-2">
-          <i className="fas fa-cloud-sun-rain text-3xl text-accent"></i>
-          <h1 className="text-xl font-bold ml-3">WeatherApp</h1>
+        <div className="flex items-center mb-12">
+          <h1 className="text-2xl font-bold text-text-primary">WeatherWise</h1>
         </div>
+        
         <nav>
-          <ul>
-            <NavItem
-              icon="fa-tachometer-alt"
-              label="Dashboard"
-              view="dashboard"
-              currentView={currentView}
-              onClick={onNavigate}
-            />
-            <NavItem
-              icon="fa-star"
-              label="Favorites"
-              view="favorites"
-              currentView={currentView}
-              onClick={onNavigate}
-            />
-            <NavItem
-              icon="fa-user"
-              label="Profile"
-              view="profile"
-              currentView={currentView}
-              onClick={onNavigate}
-            />
-          </ul>
+            <h2 className="text-xs font-bold uppercase text-text-secondary/60 tracking-wider px-2 mb-2">Menu</h2>
+            <ul className="space-y-1">
+                <li>
+                    <NavItem icon="fa-tachometer-alt" label="Dashboard" active={view === 'dashboard'} onClick={() => onNavigate('dashboard')} />
+                </li>
+                <li>
+                    <NavItem icon="fa-map-marked-alt" label="Weather Map" active={view === 'map'} onClick={() => onNavigate('map')} />
+                </li>
+                 <li>
+                    <NavItem icon="fa-star" label="Favorites" active={view === 'favorites'} onClick={() => onNavigate('favorites')} />
+                </li>
+            </ul>
         </nav>
       </div>
-      <div>
-        <ul>
-          <NavItem
-            icon="fa-sign-out-alt"
-            label="Logout"
-            view="login"
-            currentView={currentView}
-            onClick={onNavigate}
-          />
-        </ul>
-      </div>
+      
+      <SettingsPanel units={units} onUnitsChange={onUnitsChange} />
     </aside>
   );
 };

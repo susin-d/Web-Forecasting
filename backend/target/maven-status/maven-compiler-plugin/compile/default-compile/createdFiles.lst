@@ -1,0 +1,10 @@
+com\weatherforecasting\WeatherResponse.class
+com\weatherforecasting\WeatherServer$WeatherHandler.class
+com\weatherforecasting\WeatherResponse$Wind.class
+com\weatherforecasting\WeatherResponse$Clouds.class
+com\weatherforecasting\WeatherResponse$Main.class
+com\weatherforecasting\WeatherResponse$Sys.class
+com\weatherforecasting\OpenWeatherService.class
+com\weatherforecasting\WeatherResponse$Coord.class
+com\weatherforecasting\WeatherResponse$Weather.class
+com\weatherforecasting\WeatherServer.class

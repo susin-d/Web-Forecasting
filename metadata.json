@@ -1,5 +1,5 @@
 {
-  "name": "Weather Forecast Dashboard",
-  "description": "A sleek, modern weather forecasting application that provides current weather conditions, hourly and daily forecasts, and weather alerts. Users can search for locations, manage their favorite spots, and customize their viewing preferences.",
+  "name": "WeatherWise",
+  "description": "A visually striking weather dashboard featuring a modern, glassmorphism design. It provides real-time weather data, a weekly forecast chart, and an elegant user interface.",
   "requestFramePermissions": []
 }

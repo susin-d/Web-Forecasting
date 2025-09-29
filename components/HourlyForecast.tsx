@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { HourlyForecastItem } from '../types';
@@ -10,9 +9,9 @@ interface HourlyForecastProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-tertiary p-2 rounded-lg border border-primary shadow-lg">
-        <p className="label text-text-secondary">{`${label}`}</p>
-        <p className="intro text-accent font-bold">{`Temp: ${payload[0].value}°C`}</p>
+      <div className="bg-slate-800/80 p-2 rounded-lg border border-white/10 backdrop-blur-sm shadow-lg">
+        <p className="label text-text-secondary text-sm">{`${label}`}</p>
+        <p className="intro text-text-primary font-bold">{`Temp: ${payload[0].value}°`}</p>
       </div>
     );
   }
@@ -21,16 +20,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const HourlyForecast: React.FC<HourlyForecastProps> = ({ data }) => {
   return (
-    <div className="bg-secondary p-6 rounded-2xl shadow-lg">
-      <h3 className="text-xl font-bold mb-4">Hourly Forecast</h3>
-      <div style={{ width: '100%', height: 300 }}>
+    <div className="bg-black/20 border border-white/10 rounded-2xl p-6 h-full backdrop-blur-md">
+      <h3 className="text-text-secondary font-semibold text-sm mb-4">Hourly Forecast</h3>
+      <div style={{ width: '100%', height: 200 }}>
         <ResponsiveContainer>
-          <LineChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-            <XAxis dataKey="time" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" />
-            <Tooltip content={<CustomTooltip />} />
-            <Line type="monotone" dataKey="temp" stroke="#38bdf8" strokeWidth={3} dot={{ r: 4, fill: '#38bdf8' }} activeDot={{ r: 8 }}/>
+          <LineChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke={'rgba(255, 255, 255, 0.1)'} />
+            <XAxis dataKey="time" stroke={'#94a3b8'} fontSize={12} tickLine={false} axisLine={false} />
+            <YAxis stroke={'#94a3b8'} fontSize={12} tickLine={false} axisLine={false} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} />
+            <Line type="monotone" dataKey="temp" stroke="#22d3ee" strokeWidth={2} dot={{ r: 3, fill: '#22d3ee' }} activeDot={{ r: 6 }}/>
           </LineChart>
         </ResponsiveContainer>
       </div>

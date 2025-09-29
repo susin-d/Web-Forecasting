@@ -1,11 +1,9 @@
-
-export type View = 'dashboard' | 'favorites' | 'profile' | 'login' | 'register' | 'logout';
-
 export interface CurrentWeather {
   temperature: number;
   apparentTemperature: number;
   humidity: number;
   windSpeed: number;
+  windDirection: number;
   description: string;
   icon: string;
 }
@@ -30,6 +28,13 @@ export interface WeatherAlert {
   description: string;
 }
 
+export interface FavoriteLocation {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
 export interface WeatherData {
   location: string;
   latitude: number;
@@ -40,9 +45,7 @@ export interface WeatherData {
   alerts: WeatherAlert[];
 }
 
-export interface FavoriteLocation {
-    id: string;
-    name: string;
-    latitude: number;
-    longitude: number;
-}
+export type TemperatureUnit = 'celsius' | 'fahrenheit';
+export type WindSpeedUnit = 'kmh' | 'mph';
+
+export type View = 'dashboard' | 'map' | 'favorites';

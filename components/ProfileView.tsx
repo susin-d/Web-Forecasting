@@ -1,67 +1,53 @@
+import React from 'react';
+import { TemperatureUnit, WindSpeedUnit } from '../types';
 
-import React, { useState } from 'react';
+interface SettingsPanelProps {
+  units: { temp: TemperatureUnit; wind: WindSpeedUnit };
+  onUnitsChange: (newUnits: { temp: TemperatureUnit; wind: WindSpeedUnit }) => void;
+}
 
-const ProfileView: React.FC = () => {
-    const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
-    const [windAlerts, setWindAlerts] = useState(true);
-    const [tempAlerts, setTempAlerts] = useState(false);
-
-    const handleSave = () => {
-        // In a real app, this would call an API
-        alert('Settings saved!');
-    }
+const SettingsPanel: React.FC<SettingsPanelProps> = ({ units, onUnitsChange }) => {
+  
+  const ToggleButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode; className?: string }> = ({ active, onClick, children, className }) => (
+    <button
+      onClick={onClick}
+      className={`flex-1 py-1 rounded-full text-xs font-semibold transition-colors ${
+        active ? 'bg-white/20 text-text-primary' : 'bg-transparent text-text-secondary hover:bg-white/10'
+      } ${className}`}
+    >
+      {children}
+    </button>
+  );
 
   return (
-    <div className="bg-secondary p-6 rounded-2xl shadow-lg max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Profile & Settings</h2>
-      
-      <div className="space-y-6">
+    <div>
+       <h3 className="text-text-secondary font-semibold text-sm mb-2">Settings</h3>
+       <div className="bg-black/30 border border-white/10 rounded-2xl p-3 space-y-3 backdrop-blur-md">
         <div>
-          <label className="block text-text-secondary mb-2">Units</label>
-          <select 
-            value={units}
-            onChange={(e) => setUnits(e.target.value as 'metric' | 'imperial')}
-            className="w-full bg-tertiary p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent"
-          >
-            <option value="metric">Metric (°C, km/h)</option>
-            <option value="imperial">Imperial (°F, mph)</option>
-          </select>
+          <label className="block text-sm font-medium text-text-secondary mb-2 px-1">Temperature</label>
+          <div className="flex items-center space-x-1 bg-black/20 border border-white/10 p-1 rounded-full">
+             <ToggleButton active={units.temp === 'celsius'} onClick={() => onUnitsChange({ ...units, temp: 'celsius' })}>
+                °C
+             </ToggleButton>
+             <ToggleButton active={units.temp === 'fahrenheit'} onClick={() => onUnitsChange({ ...units, temp: 'fahrenheit' })}>
+                °F
+             </ToggleButton>
+          </div>
         </div>
-
         <div>
-            <h3 className="text-lg font-semibold mb-2">Alert Preferences</h3>
-            <div className="flex items-center justify-between bg-tertiary p-3 rounded-md">
-                <label htmlFor="windAlerts">Enable Wind Alerts</label>
-                <input 
-                    type="checkbox" 
-                    id="windAlerts"
-                    checked={windAlerts}
-                    onChange={(e) => setWindAlerts(e.target.checked)}
-                    className="form-checkbox h-5 w-5 text-accent bg-primary border-tertiary rounded focus:ring-accent"
-                />
-            </div>
-             <div className="flex items-center justify-between bg-tertiary p-3 rounded-md mt-2">
-                <label htmlFor="tempAlerts">Enable Temperature Alerts</label>
-                <input 
-                    type="checkbox" 
-                    id="tempAlerts"
-                    checked={tempAlerts}
-                    onChange={(e) => setTempAlerts(e.target.checked)}
-                    className="form-checkbox h-5 w-5 text-accent bg-primary border-tertiary rounded focus:ring-accent"
-                />
-            </div>
+          <label className="block text-sm font-medium text-text-secondary mb-2 px-1">Wind Speed</label>
+           <div className="flex items-center space-x-1 bg-black/20 border border-white/10 p-1 rounded-full">
+             <ToggleButton active={units.wind === 'kmh'} onClick={() => onUnitsChange({ ...units, wind: 'kmh' })}>
+                km/h
+             </ToggleButton>
+             <ToggleButton active={units.wind === 'mph'} onClick={() => onUnitsChange({ ...units, wind: 'mph' })}>
+                mph
+             </ToggleButton>
+          </div>
         </div>
-
-        <button 
-            onClick={handleSave}
-            className="w-full bg-accent text-white font-bold py-3 rounded-md hover:bg-sky-500 transition-colors duration-300 shadow-lg"
-        >
-            Save Changes
-        </button>
       </div>
-
     </div>
   );
 };
 
-export default ProfileView;
+export default SettingsPanel;

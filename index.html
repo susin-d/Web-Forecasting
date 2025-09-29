@@ -1,22 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Forecast Dashboard</title>
+    <title>WeatherWise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              'primary': '#020617', // slate-950
-              'secondary': '#0f172a', // slate-900
-              'tertiary': '#1e293b', // slate-800
-              'accent': '#38bdf8', // sky-400
+              'accent': '#22d3ee', // cyan-400
+              'accent-hover': '#06b6d4', // cyan-500
               'text-primary': '#f8fafc', // slate-50
-              'text-secondary': '#94a3b8', // slate-400
+              'text-secondary': '#cbd5e1', // slate-300
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
@@ -27,19 +24,66 @@
     </script>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "recharts": "https://aistudiocdn.com/recharts@^3.2.1"
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "recharts": "https://esm.sh/recharts@2.12.7",
+    "react-animated-weather": "https://esm.sh/react-animated-weather@1.0.3",
+    "leaflet": "https://esm.sh/leaflet@1.9.4",
+    "react-leaflet": "https://esm.sh/react-leaflet@4.2.1"
   }
 }
 </script>
+  <style>
+    body {
+      background: #0f172a; /* Fallback color */
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.5s ease-in-out;
+    }
+    .leaflet-popup-content-wrapper {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      color: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .leaflet-popup-content {
+      margin: 13px 19px;
+      line-height: 1.4;
+      font-family: 'Inter', sans-serif;
+    }
+    .leaflet-popup-tip {
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .leaflet-popup-close-button {
+      color: #f8fafc !important;
+      padding: 4px 4px 0 0 !important;
+    }
+    .leaflet-control-layers {
+      background: rgba(15, 23, 42, 0.8) !important;
+      backdrop-filter: blur(10px) !important;
+      border-radius: 12px !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #f8fafc !important;
+    }
+    .leaflet-control-layers-toggle {
+       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2Y4ZmFmYyIgd2lkdGg9IjMwcHgiIGhlaWdodD0iMzBweCI+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xMiAyTDQgNy41VjE4aDh2LTRoLTR2LTJsNCAyIDQgNlY3LjVMMTIgMnptLTIgMTJIOHYybDJ2LTJ6bTggMGgtMnYyaDJ2LTJ6bS00IDRoMnYyaC0ydi0yeiIvPjwvc3ZnPg==) !important;
+       width: 36px !important;
+       height: 36px !important;
+       background-size: 24px 24px !important;
+       background-position: center !important;
+    }
+  </style>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-primary text-text-primary font-sans">
+  <body class="text-text-primary font-sans min-h-screen flex items-center justify-center">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
